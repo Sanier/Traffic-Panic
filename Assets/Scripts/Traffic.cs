@@ -12,11 +12,13 @@ public class Traffic : MonoBehaviour
     public TrafficLight trafficLight;
 
     private NavMeshAgent navMeshAgent;
+    private NavMeshObstacle navMeshObstacle;
     
 
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        navMeshObstacle = GetComponent<NavMeshObstacle>();
     }
 
 
@@ -27,13 +29,15 @@ public class Traffic : MonoBehaviour
 
     public void CarMovement()
     {
+        navMeshAgent.Move(Vector3.forward * CarSpeed); 
+    }
 
-        //if (trafficLight.flag == true)
-        //{
-            navMeshAgent.Move(Vector3.forward * CarSpeed); //car.MovePosition(transform.position + transform.forward * CarSpeed);    //smooth movement of the car
-        //}
-
-        //else
-        //    navMeshAgent.isStopped = true; //car.drag = 2000;
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Dead")
+        {
+            Destroy(gameObject);
+            print("Dead");
+        }
     }
 }
